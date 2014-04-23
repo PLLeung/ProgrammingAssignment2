@@ -20,14 +20,27 @@
 ## getsolve: get the value of the inverse matrix
 
 makeCacheMatrix <- function(x = matrix()) {
+	# create a list of 4 functions: set, get, setsolve, getsolve
+
+	# initialize m to NULL
 	m <- NULL
+	
+	# create the set function to set the value of y to x and m to NULL
 	set <- function(y) {
 		x <<- y
 		m <<- NULL
 	}
+	
+	# create the get function to get value to x
 	get <- function() x
+	
+	# create the solve function to compute the inverse and store in m
 	setsolve <- function(solve) m <<- solve
+	
+	# create the getsolve function to get the value in m
 	getsolve <- function() m
+	
+	# create a list containing these 4 functions as output
 	list(set=set, get=get, setsolve=setsolve, getsolve=getsolve)
 }
 
@@ -39,13 +52,21 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        
+        # get the inverse and store in m
 	m<-x$getsolve()
+	
+	# if m is not NULL, get the value from cache and return
 	if(!is.null(m)) {
 		message("getting cached data")
 		return(m)
 	}
+	
+	# get the data and compute the inverse by solve
 	data <- x$get()
 	m <- solve(data,...)
+	
+	# set the inverse to m and output
 	x$setsolve(m)
 	m
 }
